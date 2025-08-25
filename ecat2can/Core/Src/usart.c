@@ -319,16 +319,7 @@ int print_my(const char *fmt, ...)
 
 void putchar_my(char ch)
 {
-  static char temp_ch;
 
-  temp_ch = ch;
-  
-  if(!fifo_is_full(&print_fifo))
-  {
-    print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)&temp_ch;     
-    print_fifo.len[print_fifo.write_ptr] = 1;
-    print_fifo.write_ptr++;
-  }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
