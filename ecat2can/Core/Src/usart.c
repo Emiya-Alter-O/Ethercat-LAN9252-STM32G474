@@ -38,7 +38,7 @@ print_fifo_type print_fifo =
 static char overlength_info[] = "print length over 256B\r\n";
 static char print_fail_info[] = "print fail\r\n";
 static char fifo_full_info[] = "fifo is full\r\n";
-static char malloc_fail_info[] = "print malloc is fail\r\n";
+// static char malloc_fail_info[] = "print malloc is fail\r\n";
 
 /* USER CODE END 0 */
 
@@ -254,37 +254,23 @@ int print_my(const char *fmt, ...)
   {
     if(len > 0 && len < 256)
     {
-      //#pragma diag_suppress 68
-
-      print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)malloc(len);
-      if(print_fifo.buffer[print_fifo.write_ptr] != NULL)
-      {
-        memcpy(print_fifo.buffer[print_fifo.write_ptr], temp_data, len);        
-        print_fifo.len[print_fifo.write_ptr] = len;
-        print_fifo.write_ptr++;
-        print_fifo.write_ptr &= 0X7F;        
-      }   
-      else
-      {
-        print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)malloc_fail_info;
-        print_fifo.len[print_fifo.write_ptr] = sizeof(malloc_fail_info);
-        print_fifo.write_ptr++;
-        print_fifo.write_ptr &= 0X7F;   
-        __get_MSP();
-      }   
-      
-      //#pragma diag_default 68
+      memcpy(&print_fifo.buffer[print_fifo.write_ptr][0], temp_data, len);        
+      print_fifo.len[print_fifo.write_ptr] = len;
+      print_fifo.write_ptr++;
+      print_fifo.write_ptr &= 0X7F;        
     }
     else if(len <= 0)
     {
-      print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)print_fail_info;
+      memcpy(&print_fifo.buffer[print_fifo.write_ptr][0],print_fail_info,sizeof(print_fail_info));
+      //print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)print_fail_info;
       print_fifo.len[print_fifo.write_ptr] = sizeof(print_fail_info);
       print_fifo.write_ptr++;
       print_fifo.write_ptr &= 0X7F;   
     }
     else if(len >=  256)
     {
-      print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)overlength_info;
+      memcpy(&print_fifo.buffer[print_fifo.write_ptr][0],overlength_info,sizeof(overlength_info));
+      //print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)overlength_info;
       print_fifo.len[print_fifo.write_ptr] = sizeof(overlength_info);
       print_fifo.write_ptr++;
       print_fifo.write_ptr &= 0X7F;   
@@ -292,7 +278,8 @@ int print_my(const char *fmt, ...)
   }
   else if(print_fifo.full_state == 1)
   {
-    print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)fifo_full_info;
+    memcpy(&print_fifo.buffer[print_fifo.write_ptr][0],fifo_full_info,sizeof(fifo_full_info));
+    //print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)fifo_full_info;
     print_fifo.len[print_fifo.write_ptr] = sizeof(fifo_full_info);
     print_fifo.write_ptr++;
     print_fifo.write_ptr &= 0X7F;
@@ -303,16 +290,16 @@ int print_my(const char *fmt, ...)
 
 void putchar_my(char ch)
 {
-  static char temp_ch;
+  // static char temp_ch;
 
-  temp_ch = ch;
+  // temp_ch = ch;
   
-  if(!fifo_is_full(&print_fifo))
-  {
-    print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)&temp_ch;     
-    print_fifo.len[print_fifo.write_ptr] = 1;
-    print_fifo.write_ptr++;
-  }
+  // if(!fifo_is_full(&print_fifo))
+  // {
+  //   print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)&temp_ch;     
+  //   print_fifo.len[print_fifo.write_ptr] = 1;
+  //   print_fifo.write_ptr++;
+  // }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)

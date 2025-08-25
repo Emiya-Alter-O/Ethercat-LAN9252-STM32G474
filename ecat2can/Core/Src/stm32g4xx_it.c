@@ -191,7 +191,7 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
-  static uint8_t print_data[256];
+  // static uint8_t print_data[256];
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
@@ -201,12 +201,12 @@ void SysTick_Handler(void)
     if(print_fifo.read_ptr != print_fifo.write_ptr)
     {
       //HAL_UART_Transmit_DMA(&huart1, fifo_full_info, sizeof(fifo_full_info));
-      memcpy(print_data, print_fifo.buffer[print_fifo.read_ptr], print_fifo.len[print_fifo.read_ptr]);    
-      HAL_UART_Transmit_DMA(&huart1, print_data, print_fifo.len[print_fifo.read_ptr]);
+      // memcpy(print_data, print_fifo.buffer[print_fifo.read_ptr], print_fifo.len[print_fifo.read_ptr]);    
+      HAL_UART_Transmit_DMA(&huart1, &print_fifo.buffer[print_fifo.read_ptr][0], print_fifo.len[print_fifo.read_ptr]);
       // HAL_UART_Transmit_DMA(&huart1, print_fifo.buffer[0], print_fifo.len[0]);
       //HAL_UART_Transmit(&huart1, print_fifo.buffer[print_fifo.read_ptr], print_fifo.len[print_fifo.read_ptr],1000);
       // HAL_UART_Transmit_DMA(&huart1, print_fifo.buffer[print_fifo.read_ptr], print_fifo.len[print_fifo.read_ptr]);
-      free(print_fifo.buffer[print_fifo.read_ptr]);
+      // free(print_fifo.buffer[print_fifo.read_ptr]);
       print_fifo.read_ptr++;
       print_fifo.read_ptr &= 0X7F;
     }
