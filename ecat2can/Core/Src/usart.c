@@ -319,7 +319,7 @@ int print_my(const char *fmt, ...)
 
 void putchar_my(char ch)
 {
-
+  //
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
