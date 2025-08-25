@@ -298,22 +298,6 @@ int print_my(const char *fmt, ...)
     print_fifo.write_ptr &= 0X7F;
   }
 
-  // if(len > 0 && len < 256)
-  // {
-  //   //#pragma diag_suppress 68
-  //   if(!fifo_is_full(&print_fifo))
-  //   {
-  //     print_fifo.buffer[print_fifo.write_ptr] = (uint8_t *)malloc(len);
-  //     if(print_fifo.buffer[print_fifo.write_ptr] != NULL)
-  //     {
-  //       memcpy(print_fifo.buffer[print_fifo.write_ptr], temp_data, len);        
-  //       print_fifo.len[print_fifo.write_ptr] = len;
-  //       print_fifo.write_ptr++;
-  //     }
-  //   }
-  //   //#pragma diag_default 68
-  // }
-  
   return len;
 }
 

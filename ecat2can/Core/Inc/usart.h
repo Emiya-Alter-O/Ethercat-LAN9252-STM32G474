@@ -33,7 +33,7 @@ extern "C" {
 
 typedef struct 
 {
-    uint8_t *buffer[128];
+    uint8_t buffer[128][256];
     uint8_t len[128];
     uint8_t read_ptr;
     uint8_t write_ptr;
